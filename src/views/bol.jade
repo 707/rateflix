@@ -1,0 +1,39 @@
+include ./header.jade
+
+
+.row.column.text-center
+  h2.menu-text Bollywood
+  hr
+.row
+  .small-6.medium-6.large-6.columns
+    h4.text-center Top Rated
+    for movie, index in top
+      .row.text-center
+        a(href='/movie/'+'#{movie.OriginalTitle}')
+          // movie item
+          img.thumbnail.large-5(src='#{movie.PosterPath}')
+          p ##{index+1}
+          h5 #{movie.OriginalTitle}
+          | Score: #{movie.Rating}/5
+          br
+          p
+            a.button.small.hollow(href='/movie/'+'#{movie.OriginalTitle}') View Movie
+          // movie item
+  .small-6.medium-6.large-6.columns
+    h4.text-center Highest Grossing
+    for movie, index in gross
+      .row.text-center
+        a(href='/movie/'+'#{movie.OriginalTitle}')
+          // movie item
+          img.thumbnail.large-5(src='#{movie.PosterPath}')
+          p ##{index+1}
+          h5 #{movie.OriginalTitle}
+          | Score: #{movie.Rating}/5
+          p Revenue #{movie.Revenue}₹
+          p
+            a.button.small.hollow(href='/movie/'+'#{movie.OriginalTitle}') View Movie
+          // movie item
+
+
+include ./footer.jade
+

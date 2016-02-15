@@ -1,0 +1,17 @@
+include ./header.jade
+
+
+.row.small-up-2.medium-up-3.large-up-4
+  // movie item
+  for movie in soon
+    .column.text-center
+      a(href='/movie/#{movie.original_title}')  
+        img(src='https://image.tmdb.org/t/p/w396/'+'#{movie.poster_path}', alt='#{movie.original_title}')
+        h5 #{movie.original_title}
+        | Score: #{movie.vote_average}
+        p Release Date: #{movie.release_date}
+    
+
+
+
+include ./footer.jade

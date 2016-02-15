@@ -1,7 +1,36 @@
-doctype html
-html(lang="en")
-	head
-		title main
-	body
-		h1 "this is the home page"
-		p "This is a para"
+include ./header.jade
+
+
+.row
+  .medium-8.large-7.columns
+    li(style='none')
+      input(type='search', placeholder='Search')  
+      button.button(type='button') Search
+hr
+.row
+  .medium-4.large-4.columns
+    .text-center
+      for movie in set1
+       a(href='/movie/'+'#{movie.title}')
+         img.thumbnail.large-8(src='http://image.tmdb.org/t/p/w185/'+'#{movie.poster_path}')
+         h5 #{movie.title} 
+         | Score: #{movie.vote_average}
+         p Release Date: #{movie.release_date}
+  .medium-4.large-4.columns
+    .text-center
+      for movie in set2
+       a(href='/movie/'+'#{movie.title}')
+         img.thumbnail.large-8(src='http://image.tmdb.org/t/p/w185/'+'#{movie.poster_path}')
+         h5 #{movie.title} 
+         | Score: #{movie.vote_average}
+         p Release Date: #{movie.release_date}
+  .medium-4.large-4.columns
+    .text-center
+      for movie in set3
+       a(href='/movie/'+'#{movie.title}')
+         img.thumbnail.large-8(src='http://image.tmdb.org/t/p/w185/'+'#{movie.poster_path}')
+         h5 #{movie.title} 
+         | Score: #{movie.vote_average}
+         p Release Date: #{movie.release_date}
+
+include ./footer.jade

@@ -12,6 +12,7 @@
     "express": "^4.13.4",
     "jade": "^1.11.0",
     "moviedb": "^0.2.2",
+    "node-promise": "^0.5.12",
     "request": "^2.69.0"
   }
 }

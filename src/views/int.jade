@@ -1,0 +1,58 @@
+include ./header.jade
+
+include ./int_header.jade
+
+.row.column.text-center
+  h2.menu-text Bollywood
+  hr
+.row
+  .medium-8.columns
+    p
+      a(href='/movie/{#{collage[0].original_title}')
+        img(src='http://image.tmdb.org/t/p/original/'+'#{collage[0].backdrop_path}', alt='{#{collage[0].original_title}')
+        | #{collage[0].original_title} Score: #{collage[0].vote_average}
+  .medium-4.columns
+    p
+      a(href='/movie/{#{collage[1].original_title}')
+        img(src='http://image.tmdb.org/t/p/original/'+'#{collage[1].backdrop_path}', alt='{#{collage[1].original_title}')
+        | #{collage[1].original_title} Score: #{collage[1].vote_average}
+    p
+      a(href='/movie/{#{collage[2].original_title}')
+        img(src='http://image.tmdb.org/t/p/original/'+'#{collage[2].backdrop_path}', alt='{#{collage[2].original_title}')
+        | #{collage[2].original_title} Score: #{collage[2].vote_average}
+hr
+.row.column
+  a(href='/int/Popular')
+    h4.text-center(style='margin: 0;') Popular
+hr
+.row.small-up-3.medium-up-4.large-up-5
+  for movie in pop
+    .column.text-center
+      a(href='/movie/#{movie.original_title}')
+        img(src='https://image.tmdb.org/t/p/w396/'+'#{movie.poster_path}', alt='#{movie.original_title}')
+        h4 #{movie.original_title}
+        | Score: #{movie.vote_average}
+hr
+.row.column
+  a(href='/int/Now_Showing')
+    h4.text-center(style='margin: 0;') Now Showing
+hr
+.row.small-up-3.medium-up-4.large-up-5
+  for movie in now
+    .column.text-center
+      img(src='https://image.tmdb.org/t/p/w396/'+'#{movie.poster_path}', alt='#{movie.original_title}')
+      h4 #{movie.original_title}
+      | Score: #{movie.vote_average}
+hr
+.row.column
+  a(href='/int/Coming_Soon')
+    h4.text-center(style='margin: 0;') Coming Soon
+hr
+.row.small-up-3.medium-up-4.large-up-5
+  for movie in soon
+    .column.text-center
+      img(src='https://image.tmdb.org/t/p/w396/'+'#{movie.poster_path}', alt='#{movie.original_title}')
+      h4 #{movie.original_title}
+      | Score: #{movie.vote_average}
+
+include ./footer.jade

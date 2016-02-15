@@ -1,0 +1,18 @@
+include ./header.jade
+
+// header comes here
+.row.column.text-center
+  h2 Now showing
+  hr
+.row.small-up-2.large-up-6
+  // movie item
+  for movie in movies
+    .column.text-center  
+      a(href='/movie/'+'#{movie.original_title}')
+        img.thumbnail(src='https://image.tmdb.org/t/p/w396/#{movie.poster_path}')
+        h5 #{movie.original_title}
+        p #{movie.vote_average}
+  // movie item
+// footer comes here
+
+include ./footer.jade

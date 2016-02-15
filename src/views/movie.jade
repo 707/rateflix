@@ -1,0 +1,120 @@
+include ./header.jade
+
+.row.columns
+  nav(aria-label='You are here:', role='navigation')
+    ul.breadcrumbs
+      li
+        a(href='/') Home
+     
+      li
+        span.show-for-sr Current: 
+        a(href='/movie/#{movie.Title}') #{movie.Title}
+.row
+  .medium-6.large-5.small-6.columns
+    h3.text-center #{movie.Title} #{movie.Year}
+    .row
+      .medium-6.large-6.columns
+        a.small.button.text-center(href='#') Popularity: #{movie1.popularity}
+        br
+        a.small.button Average Score: #{avg}
+        br
+        a.small.button(href='http://www.imdb.com/title/'+'#{movie.Year}') IMDB: #{movie.imdbRating}
+        br
+        a.small.button(href='#{movie.tomatoURL}') Rotten Tomatoes: #{movie.tomatoRating}
+        br
+        a.small.button(href='#') Metacritic: #{movie.Metascore}/100
+        br
+        a.small.button(href='#') Tmdb: #{movie1.vote_average}
+        br
+      .medium-6.large-6.columns
+        ul(style='list-style-type: none;')
+          li
+            b Release Date: 
+            | #{movie.Released}
+          li
+            b Rated: 
+            | #{movie.Released}
+          li
+            b Runtime: 
+            | #{movie.Runtime}
+          li
+            b Genre: 
+            | #{movie.Genre}
+          li
+            b Language: 
+            | #{movie.Language}
+          li
+            b Country: 
+            | #{movie.Country}
+          li
+            b Revenue: 
+            | #{movie.BoxOffice}
+          li
+            a(href='#{movie.Website}') Website
+
+
+    h4
+      b Overview
+    p
+      | #{movie.Plot}
+    .row
+      .small-12.large-12.columns
+        .tiny.button Tags:
+        for tag in tags
+         .tiny.button= tag + ' '
+      .small-12.large-12.columns
+        .small.secondary.expanded.button-group
+          a.button(href='https://www.youtube.com/watch?v='+'#{trailer}') Watch Trailer
+          a.button watch netflix
+  .medium-6.columns
+    img.thumbnail(src='#{movie.Poster}')
+    p
+      b Director: 
+      | #{movie.Director}
+      br
+      hr
+      b Writers: 
+      | #{movie.Writer}
+      br
+      hr
+      b Actors: 
+      | #{movie.Actors}
+.column.row
+  hr
+  ul#example-tabs.tabs(data-tabs='')
+    li.tabs-title.is-active
+      a(href='#panel1', aria-selected='true') Movie Reviews
+    li.tabs-title
+      a(href='#panel2') Similar Movies
+    li.tabs-title
+      a(href='#panel3') Trailers and Videos
+  .tabs-content(data-tabs-content='example-tabs')
+    #panel1.tabs-panel.is-active
+      h4 User Reviews
+      // review item
+      for review in reviews
+       a(href='#{review.url}') #{review.author}
+       p #{review.content}
+  // review item
+#panel2.tabs-panel
+  .row.medium-up-3.large-up-5
+    // similar item
+    for similar in similars
+     .column
+       a(href='/movie/'+ '#{similar.title}')
+         img.thumbnail(src='https://image.tmdb.org/t/p/w396/'+'#{similar.poster_path}')
+         h5
+           | #{similar.title} 
+           br
+           small  Rating: #{similar.vote_average} 
+    // similar item
+#panel3.tabs-panel
+  .row.medium-up-3.large-up-5
+    // similar video
+    for video in videos
+     .column.large-6
+       .flex-video
+         iframe(width='420', height='315', src='https://www.youtube.com/embed/'+'#{video.key}', frameborder='0', allowfullscreen='')
+    // similar video
+
+include ./footer.jade
