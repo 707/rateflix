@@ -1,10 +1,10 @@
 {
-  "name": "try",
+  "name": "rateflix",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "An aggregator for movie ratings",
+  "main": "./src/server.js",
   "scripts": {
-   "start": "node app.js"
+   "start": "node ./src/server.js"
 
   },
   "author": "",
@@ -12,7 +12,6 @@
   "dependencies": {
     "express": "^4.13.4",
     "jade": "^1.11.0",
-    "moviedb": "^0.2.2",
     "node-promise": "^0.5.12",
     "request": "^2.69.0"
   }
