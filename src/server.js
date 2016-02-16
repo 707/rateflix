@@ -9,6 +9,15 @@ var promise1 = new setPromise();
 var port = process.env.PORT || 8080;
 
 
+var app = express();
+
+
+app.set('view engine', 'jade'); //set view engine
+app.set('views', __dirname + '/views'); //set view to folder path 
+app.use(express.static(__dirname + '/public'));
+
+
+
 var movie;
 var movie1;
 var avg_r;
@@ -22,13 +31,6 @@ var tapi = "&api_key=00c00c9741ab3a01bf6c16625e27a800";
 
 var content;
 var content2
-var app = express();
-
-
-app.set('view engine', 'jade'); //set view engine
-app.set('views', __dirname + '/views'); //set view to folder path 
-
-
 
 app.get('/', function (req, res){ 
 
