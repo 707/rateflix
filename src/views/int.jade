@@ -54,24 +54,4 @@ hr
       img(src='https://image.tmdb.org/t/p/w396/'+'#{movie.poster_path}', alt='#{movie.original_title}')
       h4 #{movie.original_title}
       | Score: #{movie.vote_average}
-.row
-  ul.pagination.text-center(role='navigation', aria-label='Pagination')
-    li.pagination-previous.disabled
-      a(href='/int/popular/'+'#{page-1}', aria-label='Previous') Previous
-    li.current
-      span.show-for-sr Page
-      a(href='/int/popular/'+'#{page}', aria-label='Page #{page}')  #{page}
-    li
-      a(href='/int/popular/'+'#{page+1}', aria-label='Page #{page+1}')  #{page+1}
-    li
-      a(href='/int/popular/'+'#{page+2}', aria-label='Page #{page+2}')  #{page+2}
-    li
-      a(href='/int/popular/'+'#{page+3}', aria-label='Page #{page+3}')  #{page+3}
-    li.ellipsis
-    li
-      a(href='/int/popular/'+'#{page+4}', aria-label='Page #{page+10}')  #{page+10}
-    li
-      a(href='/int/popular/'+'#{page+5}', aria-label='Page #{page+11}')  #{page+11}
-    li.pagination-next
-      a(href='/int/popular/'+'#{page+1}', aria-label='Next page') Next
 include ./footer.jade

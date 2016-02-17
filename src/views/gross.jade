@@ -5,7 +5,7 @@ include ./int_header.jade
 // header comes here
 .row.column.text-center
   h4 
-    a.text-menu(href='/int/Most_Voted') Most Voted
+    a.text-menu(href='/int/#{list_link}') #{list_name}
   hr
 .row
   .small-6.medium-6.large-12.columns
@@ -17,13 +17,13 @@ include ./int_header.jade
         .small-6.medium-6.large-6.columns
           a(href='/movie'+'#{movie.original_title}')
             h5 #{movie.original_title}
-            | Voted: #{movie.vote_count} times
             |  Score: #{movie.vote_average}/10
             p #{movie.overview}
             a.button.small.hollow(href='/movie'+'#{movie.original_title}') View Movie
         .small-6.medium-6.large-5.columns
           a(href='/movie'+'#{movie.original_title}')
             img.thumbnail.large-4(src='https://image.tmdb.org/t/p/w396/#{movie.poster_path}')
+        hr
         // list item
 
 // footer starts here!

@@ -444,13 +444,14 @@ request({
   	var movies = body.results;
   	var list_link = 'Top_Grossing';
     var list_name = 'Top Grossing'	;
-  	res.render('pop', {movies: movies, list_link: list_link, list_name: list_name} );
+    var page = 1;
+  	res.render('gross', {movies: movies, list_link: list_link, list_name: list_name, page: page} );
 
 
     };
 });
 
-}); //end int boxoffice
+}); //end int grossing
 
 
 
