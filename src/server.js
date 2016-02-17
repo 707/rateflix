@@ -241,9 +241,10 @@ request({
 	}, function (error, response, body) {
   if (!error && response.statusCode == 200) {
   	var movies = body.results;
+  	var page = 1;
  	var list_link = 'Popular'
     var list_name = 'Popular'	
-  	res.render('pop', {movies: movies, list_link: list_link, list_name: list_name} )
+  	res.render('pop', {movies: movies, list_link: list_link, list_name: list_name, page: page} )
     };
 });
 
@@ -265,9 +266,11 @@ request({
 	json: true
 	}, function (error, response, body) {
   if (!error && response.statusCode == 200) {
-	res.send(body);
-	res.end();
-
+  	var movies = body.results;
+ 	var list_link = 'Popular'
+    var list_name = 'Popular'
+    page = parseInt(page);	
+  	res.render('pop', {movies: movies, list_link: list_link, list_name: list_name, page: page} )
     };
 });
 
@@ -328,7 +331,8 @@ request({
   	var movies = body.results;
   	var list_link = 'Top_Rated';
     var list_name = 'Top Rated'	;
-  	res.render('pop', {movies: movies, list_link: list_link, list_name: list_name} );
+    var page = 1;
+  	res.render('top', {movies: movies, list_link: list_link, list_name: list_name, page: page} );
 
     };
 });
@@ -349,9 +353,14 @@ request({
 	url: "http://api.themoviedb.org/3/movie/top_rated?page=" + page +"&api_key=00c00c9741ab3a01bf6c16625e27a800",
 	json: true
 	}, function (error, response, body) {
+
   if (!error && response.statusCode == 200) {
-	res.send(body);
-	res.end();
+  	var movies = body.results;
+  	var list_link = 'Top_Rated';
+    var list_name = 'Top Rated'	;
+    page = parseInt(page);	
+
+  	res.render('top', {movies: movies, list_link: list_link, list_name: list_name, page: page} );
 
     };
 });
@@ -381,8 +390,8 @@ request({
   		orbit.push(movies[Math.floor(Math.random() * movies.length)]);
 
   	}
-
-  	res.render('now' , {movies: movies, orbit: orbit});
+  	var page = 1;
+  	res.render('now' , {movies: movies, orbit: orbit, page:page});
 
 
     };
@@ -405,10 +414,16 @@ request({
 	json: true
 	}, function (error, response, body) {
   if (!error && response.statusCode == 200) {
-	res.send(body);
-	res.end();
+  	var movies = body.results;
+  	var orbit = [];
+  	for(var i = 0; i < 5; i++){
 
-    };
+  		orbit.push(movies[Math.floor(Math.random() * movies.length)]);
+
+  	}
+  	page = parseInt(page);
+  	res.render('now' , {movies: movies, orbit: orbit, page:page});
+  }
 });
 
 
@@ -429,8 +444,8 @@ request({
 	}, function (error, response, body) {
   if (!error && response.statusCode == 200) {
   	var soon = body.results;
-  	var page = '1';
-  	res.render('soon', { soon: soon})  
+  	var page = 1;
+  	res.render('soon', { soon: soon, page: page})  
 
     };
 });
@@ -453,8 +468,8 @@ request({
 	}, function (error, response, body) {
   if (!error && response.statusCode == 200) {
   	var soon = body.results;
-
-  	res.render('soon', { soon: soon})  
+  	page = parseInt(page)
+  	res.render('soon', { soon: soon, page: page})  
 
     };
 });
