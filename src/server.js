@@ -3,8 +3,13 @@
 var express = require('express');
 var request  = require('request');
 var setPromise = require('node-promise').Promise;
+
+/*Promises */
 var promise = new setPromise();
 var promise1 = new setPromise();
+var movie;
+var movie1;
+var avg_r;
 
 var port = process.env.PORT || 8080;
 
@@ -16,29 +21,15 @@ app.set('view engine', 'jade'); //set view engine
 app.set('views', __dirname + '/views'); //set view to folder path 
 app.use(express.static(__dirname + '/public'));
 
-
-
-var movie;
-var movie1;
-var avg_r;
-
 var movie_id;
 var tmdb_id;
 
-var ourl =  "http://www.omdbapi.com/?t=";
-var otype = "&y=&tomatoes=true&plot=short&r=json";
-var tapi = "&api_key=00c00c9741ab3a01bf6c16625e27a800";
-
-var content;
-var content2
-
-app.get('/', function (req, res){ 
-
+app.get('/', function (req, res){  //Index
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
 
-console.log("ACCESSING 1");
+console.log("ACCESSING index");
 
 request({ 
 	url: "http://api.themoviedb.org/3/movie/popular?page=1&api_key=00c00c9741ab3a01bf6c16625e27a800",
@@ -50,9 +41,7 @@ request({
     var set1 = movies.splice(0,3);
     var set2 = movies.splice(3,3);
     var set3 = movies.splice(6,3);
-    var set4 = movies.splice(9,2);
-    console.log();
-	
+    var set4 = movies.splice(9,2);	
 	res.render('index', {set1: set1 , set2: set2 , set3: set3, set4: set4});
 
 	};
@@ -60,15 +49,16 @@ request({
 });
 
 
-}); //end /
+}); //end '/'
 
-app.get('/int/', function (req, res){ 
+app.get('/int/', function (req, res){  //International
 
 var collage;
 var pop;
 var now;
 var soon;
 
+console.log("ACCESSING int");
 request({  //pop
 	url: "http://api.themoviedb.org/3/movie/popular?page=1&api_key=00c00c9741ab3a01bf6c16625e27a800",
 	json: true
@@ -96,10 +86,8 @@ request({
   if (!error && response.statusCode == 200) {
   	soon = body.results;
   	var splitter = body.results;
-  	soon = splitter.splice(0,10);
-
+  	soon = splitter.splice(0,10); //splice results into 10.
 	movie_id = body.id;
-
 	promise1.resolve(movie_id);
 
     };    
@@ -115,30 +103,27 @@ promise.then(function(movie_id) { //soon
 	json: true
 	}, function (error, response, body) {
   if (!error && response.statusCode == 200) {
-
   	var splitter = body.results;
-  	now = splitter.splice(0,10)
-
+  	now = splitter.splice(0,10) 
   	res.render('int', { collage: collage , pop: pop,  now: now, soon: soon})  
 
     };
 });
 
-
-
-
 });
-
-
 
 }); //end /int/
 
 
 
-app.get('/movie/:title', function (req, res){
+app.get('/movie/:title', function (req, res){  //Movie
 
 var title = req.params.title;
 
+console.log("ACCESSING movie: " + title );
+var ourl =  "http://www.omdbapi.com/?t=";
+var otype = "&y=&tomatoes=true&plot=short&r=json";
+var tapi = "&api_key=00c00c9741ab3a01bf6c16625e27a800";
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
@@ -148,14 +133,11 @@ request({
 	url: ourl+title+otype,
 	json: true
 	}, function (error, response, body) {
-	console.log(title);
   if (!error && response.statusCode == 200) {
     movie_id = body.imdbID;
-    console.log("imdb id: " + body.imdbID); //create error segment later
    	movie = body;
     promise.resolve(movie_id);
-
-      } else { res.write("Not available main")
+      } else { res.write("404 Not available!")
   				res.end()
   			};
 });
@@ -171,16 +153,8 @@ promise.then(function(movie_id) {
 		}, function (error, response, body) {
 	 	if (!error && response.statusCode == 200) {
 	 		movie1 = body.movie_results[0];
-	 		//console.log(body);
 	 		tmdb_id = body.movie_results[0].id;
-	 		//console.log("tmdb_id: " + tmdb_id)
-
 	 	    promise1.resolve(tmdb_id);
-
-			// res.render('movie', { movie1: movie1, movie2: movie2}); 
-
-		 //    res.end();
-
 			} else { res.send("Not available p");
 						res.end();
 			};
@@ -202,7 +176,6 @@ promise.then(function(tmdb_id) {
 	 		var trailer_url = movie1.trailers.youtube[0].source; //trailer
 	 		var reviews = movie1.reviews.results;
 	 		var similars = movie1.similar.results;
-	 		console.log(similars);
 	 		var videos = movie1.videos.results;
 	 		var tags = [];
 	 		var tags_object = body.keywords.keywords;
@@ -227,13 +200,13 @@ promise.then(function(tmdb_id) {
 }); //end movie/:title
 
 
-app.get('/int/popular/', function (req, res){ 
+app.get('/int/popular/', function (req, res){  //int popular
 
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
 
-console.log("ACCESSING 1");
+console.log("ACCESSING int/popular");
 
 request({ 
 	url: "http://api.themoviedb.org/3/movie/popular?page=1&api_key=00c00c9741ab3a01bf6c16625e27a800",
@@ -277,20 +250,8 @@ request({
 
 }); //end int/popular/:page
 
-function dynamicSort(property) {
-    var sortOrder = 1;
-    if(property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
-    }
-    return function (a,b) {
-        var result = (a[property] > b[property]) ? -1 : (a[property] < b[property]) ? 1 : 0;
-        return result * sortOrder;
-    }
-}
 
-app.get('/int/most_voted/', function (req, res){ 
-
+app.get('/int/most_voted/', function (req, res){  //Most Voted
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
@@ -302,7 +263,6 @@ request({
 	json: true
 	}, function (error, response, body) {
   if (!error && response.statusCode == 200) {
- 
  	var movies = body.results;
 	res.render('most_voted', {movies: movies} );
 
@@ -315,13 +275,13 @@ request({
 
 
 
-app.get('/int/top_rated/', function (req, res){ 
+app.get('/int/top_rated/', function (req, res){  //Top Rated
 
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
 
-console.log("ACCESSING release");
+console.log("ACCESSING Top Rated");
 
 request({ 
 	url: "http://api.themoviedb.org/3/movie/top_rated?page=1&api_key=00c00c9741ab3a01bf6c16625e27a800",
@@ -337,7 +297,6 @@ request({
     };
 });
 
-
 }); // end top_rated
 
 app.get('/int/top_rated/:page', function (req, res){ 
@@ -347,7 +306,7 @@ var page = req.params.page;
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
 
-console.log("ACCESSING" + page);
+console.log("ACCESSING Top_Rated:" + page);
 
 request({ 
 	url: "http://api.themoviedb.org/3/movie/top_rated?page=" + page +"&api_key=00c00c9741ab3a01bf6c16625e27a800",
@@ -359,7 +318,6 @@ request({
   	var list_link = 'Top_Rated';
     var list_name = 'Top Rated'	;
     page = parseInt(page);	
-
   	res.render('top', {movies: movies, list_link: list_link, list_name: list_name, page: page} );
 
     };
@@ -370,13 +328,13 @@ request({
 
 
 
-app.get('/int/now/', function (req, res){ 
+app.get('/int/now/', function (req, res){  //Int Now
 
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
 
-console.log("ACCESSING release");
+console.log("ACCESSING /now");
 
 request({ 
 	url: "http://api.themoviedb.org/3/movie/now_playing?page=1&api_key=00c00c9741ab3a01bf6c16625e27a800",
@@ -386,14 +344,10 @@ request({
   	var movies = body.results;
   	var orbit = [];
   	for(var i = 0; i < 5; i++){
-
-  		orbit.push(movies[Math.floor(Math.random() * movies.length)]);
-
+  		orbit.push(movies[Math.floor(Math.random() * movies.length)]); //get collage data
   	}
   	var page = 1;
   	res.render('now' , {movies: movies, orbit: orbit, page:page});
-
-
     };
 });
 
@@ -426,17 +380,15 @@ request({
   }
 });
 
-
 });  // end now showing:page
 
 
-app.get('/int/soon/', function (req, res){ 
-
+app.get('/int/soon/', function (req, res){  //Soon
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
 
-console.log("ACCESSING release");
+console.log("ACCESSING /soon");
 
 request({ 
 	url: "http://api.themoviedb.org/3/movie/upcoming?page=1&api_key=00c00c9741ab3a01bf6c16625e27a800",
@@ -449,7 +401,6 @@ request({
 
     };
 });
-
 
 }); // end coming_soon
 
@@ -477,13 +428,13 @@ request({
 
 });  // end coming_soon:page
 
-app.get('/int/top_grossing/', function (req, res){ 
+app.get('/int/top_grossing/', function (req, res){  //Int/ Top Grossing
 
 
 res.setHeader('Content-Type', 'text/html; charset=utf-8');
 res.setHeader('Connection', 'Transfer-Encoding');
 
-console.log("ACCESSING release");
+console.log("ACCESSING Top Grossing");
 
 request({ 
 	url: "http://api.themoviedb.org/3/discover/movie?sort_by=revenue.desc&api_key=00c00c9741ab3a01bf6c16625e27a800",
@@ -499,12 +450,11 @@ request({
     };
 });
 
-
 }); //end int boxoffice
 
 
 
-app.get('/bol/', function (req, res){ 
+app.get('/bol/', function (req, res){  //Bollywood
 
 var top;
 var gross;
@@ -517,10 +467,7 @@ request({  //gross
     gross = body;
   	promise.resolve(movie_id);
 
-
     };
-
-
 });
 
 promise.then(function(movie_id) { //rated
@@ -543,56 +490,9 @@ request({
 
 }); //end /bol/
 
-
-
-
-app.get('/bol/top_grossing/', function (req, res){ 
-
-
-res.setHeader('Content-Type', 'text/html; charset=utf-8');
-res.setHeader('Connection', 'Transfer-Encoding');
-
-console.log("ACCESSING release");
-
-request({ 
-	url: "https://api.cinemalytics.com/v1/analytics/TopGrossedMovies/?auth_token=ED96DB2E3C0F6942FA699E2AD91811C9",
-	json: true
-	}, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-	res.send(body);
-	res.end();
-
-    };
-}); 
-
-}); //end bol most grossing
-
-app.get('/bol/top_rated/', function (req, res){ 
-
-
-res.setHeader('Content-Type', 'text/html; charset=utf-8');
-res.setHeader('Connection', 'Transfer-Encoding');
-
-console.log("ACCESSING release");
-
-request({ 
-	url: "https://api.cinemalytics.com/v1/analytics/TopMovies/?auth_token=ED96DB2E3C0F6942FA699E2AD91811C9",
-	json: true
-	}, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-	res.send(body);
-	res.end();
-
-    };
-}); 
-
-}); //end bol top_Rated
-
-
-
 app.listen(port , function(){
 
-	console.log("running now");
+	console.log("Running now on port: " + port);
 });
 
 
