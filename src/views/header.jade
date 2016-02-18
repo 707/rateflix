@@ -20,12 +20,13 @@ head
           a(href='/int/now') Now Showing
         li.menu-text
           a(href='/int/soon') Coming Soon
-    //- .top-bar-right
-    //-   ul.menu
-    //-     li
-    //-       input(type='search', placeholder='Search')
-    //-     li
-    //-       button.button(type='button') Search
+    .top-bar-right
+      form(action='/search', method='post')        
+        ul.menu
+          li
+            input(type='text', name='query' placeholder='Search')
+          li
+            button.button(type='submit') Search
 // main header ends here
 br
 

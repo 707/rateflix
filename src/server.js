@@ -3,6 +3,7 @@
 var express = require('express');
 var request  = require('request');
 var setPromise = require('node-promise').Promise;
+var bodyParser = require('body-parser');
 
 /*Promises */
 var promise = new setPromise();
@@ -15,6 +16,7 @@ var port = process.env.PORT || 8080;
 
 
 var app = express();
+app.use(bodyParser());
 
 
 app.set('view engine', 'jade'); //set view engine
@@ -318,7 +320,7 @@ request({
   	var list_link = 'Top_Rated';
     var list_name = 'Top Rated'	;
     page = parseInt(page);	
-  	res.render('top', {movies: movies, list_link: list_link, list_name: list_name, page: page} );
+  	res.render('search', {movies: movies, list_link: list_link, list_name: list_name, page: page} );
 
     };
 });
@@ -490,6 +492,28 @@ request({
 }); //end promise
 
 }); //end /bol/
+
+app.post('/search', function(req, res){
+  var query = req.body.query;
+
+res.setHeader('Content-Type', 'text/html; charset=utf-8');
+res.setHeader('Connection', 'Transfer-Encoding');
+
+console.log("ACCESSING /search/" + query);
+
+request({ 
+  url: "http://api.themoviedb.org/3/search/movie?query=" + query + "&api_key=00c00c9741ab3a01bf6c16625e27a800",
+  json: true
+  }, function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    var search = body.results;
+    res.render('search', { search: search})  
+
+    };
+});
+
+});
+
 
 app.listen(port , function(){
 
